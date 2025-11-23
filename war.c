@@ -96,3 +96,118 @@ int main() {
 
 // limparBufferEntrada():
 // Função utilitária para limpar o buffer de entrada do teclado (stdin), evitando problemas com leituras consecutivas de scanf e getchar.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+// define o número máximo de territórios no sistema:
+#define MAX_TERRITÓRIOS 5
+// define o número máximo de caracteres das strings:
+#define TAM_STRING 30
+// estrutura para representar um território:
+struct  território {
+    char nome[TAM_STRING];
+    char cor[TAM_STRING];
+    int tropas;
+};
+// Função para limpar o buffer de entrada (stdin)
+void limparBufferEntrada(){
+    int c;
+    // Lê e descarta caracteres até encontrar um newline ou EOF
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+int main(){
+    //array estático para armazenar os territórios:
+    struct território sistema[MAX_TERRITÓRIOS];
+     // Contador de territórios cadastrados
+    int TotalTerritórios = 0;
+    int opcao;
+
+    do{
+         printf("_________________________________\n");
+        printf(" TERRITÓRIOS:\n");
+        printf("1 - Cadastra novo território\n");
+        printf("2 - Listar todos os territórios\n");
+        printf("0 - Sair\n");
+        printf("__________________________________\n");
+        printf("Escolha uma opção:");
+
+        // Leitura da opção e limpeza do buffer
+        if (scanf("%d", &opcao) != 1) {
+            // Em caso de erro na leitura do inteiro
+            opcao = -1; // Opção inválida
+        }
+        limpabufferentrada();
+
+        switch (opcao) {
+            case 1:
+                printf("**Cadastro de Novo Território**\n\n");
+
+                if (TotalTerritórios < MAX_TERRITÓRIOS) {
+                    // --- Leitura das strings com fgets (inclui \n) ---
+                    printf("Digite o nome do Território: ");
+                    fgets(sistema[TotalTerritórios].nome, TAM_STRING, stdin);
+                    
+                    printf("Digite o Nome da Cor do Território:");
+                    fgets(sistema[TotalTerritórios].cor, TAM_STRING, stdin);
+
+                    printf("Digite a Quantidade de tropas: ");
+                    fgets(sistema[TotalTerritórios].tropas, TAM_STRING, stdin);
+
+
+                    // garante a listagem sem quebre de linhas indesejadas:
+                    sistema[TotalTerritórios].nome[strcspn(sistema[TotalTerritórios].nome, "\n")] = '\0';
+                    sistema[TotalTerritórios].cor[strcspn(sistema[TotalTerritórios].cor, "\n")] = '\0';
+                    sistema[TotalTerritórios].tropas[strcspn(sistema[TotalTerritórios].tropas, "\n")] = '\0';
+
+                    printf("Digite a Quatidade de Tropas:");
+                    scanf("%d", &sistema[TotalTerritórios].tropas);
+                    limpabufferentrada(); // Limpa o buffer após o scanf
+
+                    TotalTerritórioss++;
+                     printf("\nTerritório cadastrado com sucesso!\n");
+                } else {
+                    printf("Sistema Cheio! Não é possível cadastrar mais territórios.\n");
+                }
+
+                printf("\nPressione Enter para continuar...");
+                getchar();
+                break;
+
+            case 2: 
+                printf("___ Lista de Territórios Cadastrados____\n\n");
+
+                if (TotalTerritórios == 0) {
+                    printf("Nenhum território cadastrado ainda.\n");
+                } else {
+                    for (int i = 0; i < TotalTerritórios; i++) {
+                        printf("___________________________\n");
+                        //Mostra o número do território
+                        printf("Território: %d\n", i + 1); 
+                        printf("Nome: %s\n", sistema[i].nome); 
+                        printf("Cor: %s\n", sistema[i].cor);
+                        printf("Tropas: %d\n", sistema[i].tropas);
+                    }
+                    printf("_______________________________\n");
+
+                    }
+
+                printf("\nPressione Enter para continuar...");
+                getchar();
+                break;
+            
+            case 0:
+                printf("\nSaindo do sistema...\n");
+                break;
+                
+            default:
+                printf("\nOpção Inválida! Tente novamente.\n");
+                printf("\nPressione Enter para continuar...");
+                getchar();
+                break;
+        }
+
+    } while (opcao != 0);
+
+    return 0;
+}
